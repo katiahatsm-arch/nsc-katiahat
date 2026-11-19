@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="bn"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NSC Inspection – WBSEDCL</title>
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--tx:#1c2430;--mu:#5d6b7d;--bd:#d5dbe5;--pr:#0b5cab;--ok:#18794e;--wr:#b45309;--er:#c62828;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10151c;--card:#1a212b;--tx:#e8edf3;--mu:#94a3b5;--bd:#2c3644;--pr:#5aa5ff}}
+:root[data-theme="dark"]{--bg:#10151c;--card:#1a212b;--tx:#e8edf3;--mu:#94a3b5;--bd:#2c3644;--pr:#5aa5ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,"Noto Sans Bengali",sans-serif}
+header{background:var(--pr);color:#fff;padding:10px 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+header b{flex:1;min-width:150px}header button{background:#fff3;color:#fff;border:0}
+main{max-width:900px;margin:0 auto;padding:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:12px;margin:10px 0}
+h3{margin:0 0 8px;font-size:16px;color:var(--pr)}
+label{display:block;font-size:13px;color:var(--mu);margin:8px 0 2px}
+input,select,textarea,button{font:inherit;padding:9px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--card);color:var(--tx);width:100%}
+button{width:auto;cursor:pointer;background:var(--pr);color:#fff;border:0;font-weight:600}
+button.g{background:var(--card);color:var(--pr);border:1px solid var(--pr)}button.d{background:var(--er)}button.s{background:var(--ok)}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.yn{display:flex;gap:6px;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd);padding:6px 0}.yn span{flex:1}.yn select{width:90px}
+table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);padding:4px 6px;text-align:left}td input{padding:5px}
+.tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:12px;color:#fff}.draft{background:var(--wr)}.submitted{background:var(--pr)}.Complete{background:var(--ok)}.Pending{background:var(--er)}.returned{background:#7b1fa2}.wm{position:absolute;top:44%;left:50%;transform:translate(-50%,-50%) rotate(-35deg);font:bold 96px Arial,sans-serif;color:rgba(24,121,78,.22);border:8px solid rgba(24,121,78,.22);padding:0 24px;border-radius:12px;z-index:5;pointer-events:none;letter-spacing:4px}.sk{background:#fff;border:1px solid var(--bd);border-radius:8px;margin-top:8px}
+.img{max-width:100%;max-height:200px;border:1px solid var(--bd);border-radius:8px}.err{color:var(--er)}
+.a4{position:relative;overflow:hidden;background:#fff;color:#000;width:210mm;max-width:100%;min-height:297mm;margin:10px auto;padding:8mm;font:11px/1.4 Arial,'Noto Sans Bengali','Nirmala UI','Vrinda',sans-serif;border:1px solid #999}
+.a4 h2{text-align:center;font-size:13px;margin:0}.a4 h4{margin:8px 0 3px;background:#e6e6e6;padding:2px 4px;font-size:11px}
+.a4 td,.a4 th{border:1px solid #444;padding:3px 5px;color:#000}.a4 td.v{width:55%;font-size:12px;font-weight:bold;padding:5px 6px;word-break:break-word}.a4 td.y{width:100px;font-size:12px;font-weight:bold;text-align:center;padding:4px 5px}.a4 .img{max-height:80px;border:1px solid #444}
+.sc{overflow-x:auto}
+@page{size:A4;margin:0}
+@media print{body{background:#fff}header,.noprint,.card{display:none!important}main{padding:0;max-width:none}.a4{border:0;margin:0;width:210mm;height:296mm;max-height:296mm;overflow:hidden;page-break-after:avoid}}
+</style></head><body>
+<header><b>WBSEDCL – NSC Inspection (Katiahat) · FB2</b><button onclick="setLang()" id="lb">English</button><span id="who"></span><span id="nav"></span></header>
+<main id="app">লোড হচ্ছে…</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>window.fbReady=window.fbReady||new Promise(r=>{window._fbr=r});</script>
+<script type="module">
+/* ====== এখানে আপনার Firebase config বসান (Project settings > Your apps > Web app) ====== */
+const firebaseConfig = {
+  apiKey: "AIzaSyCrFwo_u3SBf3Tn90bXXr9gbHaVXWkPuYE",
+  authDomain: "nsc-katiahat.firebaseapp.com",
+  projectId: "nsc-katiahat",
+  storageBucket: "nsc-katiahat.firebasestorage.app",
+  messagingSenderId: "737315969866",
+  appId: "1:737315969866:web:dfa603ae9e4b1cb59bbfb3"
+};
+/* ================================================================================== */
+(async()=>{
+ if(window.FB)return;
+ if(String(firebaseConfig.apiKey).startsWith('PASTE')){window.FB_CONFIG_MISSING=true;window._fbr&&window._fbr();return}
+ const V='10.12.2',B='https://www.gstatic.com/firebasejs/'+V+'/';
+ const A=await import(B+'firebase-app.js'),AU=await import(B+'firebase-auth.js'),FS=await import(B+'firebase-firestore.js');
+ const app=A.initializeApp(firebaseConfig),auth=AU.getAuth(app),fs=FS.getFirestore(app),E=m=>m+'@nsc.local';
+ const wrap=s=>({docs:s.docs.map(d=>({id:d.id,data:()=>d.data()}))});
+ window.FB={
+  auth:{
+   onChange:cb=>AU.onAuthStateChanged(auth,u=>cb(u&&u.email?u.email.split('@')[0]:null)),
+   signIn:(m,p)=>AU.signInWithEmailAndPassword(auth,E(m),p),
+   signOut:()=>AU.signOut(auth),
+   signUp:(m,p)=>AU.createUserWithEmailAndPassword(auth,E(m),p),
+   createUser:async(m,p)=>{let a2;try{a2=A.getApp('sec')}catch(e){a2=A.initializeApp(firebaseConfig,'sec')}const au2=AU.getAuth(a2);try{await AU.createUserWithEmailAndPassword(au2,E(m),p)}finally{try{await AU.signOut(au2)}catch(e){}}},
+   changePw:async(o,n)=>{const u=auth.currentUser;await AU.reauthenticateWithCredential(u,AU.EmailAuthProvider.credential(u.email,o));await AU.updatePassword(u,n)}
+  },
+  db:{
+   doc:path=>{const r=FS.doc(fs,path);return{get:async()=>{const s=await FS.getDoc(r);return{exists:s.exists(),id:s.id,data:()=>s.data()}},set:d=>FS.setDoc(r,d),update:d=>FS.updateDoc(r,d),delete:()=>FS.deleteDoc(r)}},
+   collection:c=>({get:async()=>wrap(await FS.getDocs(FS.collection(fs,c)))}),
+   batchSet:async items=>{const bt=FS.writeBatch(fs);items.forEach(([pa,d])=>bt.set(FS.doc(fs,pa),d));await bt.commit()},
+   where:async(c,f,o,v)=>wrap(await FS.getDocs(FS.query(FS.collection(fs,c),FS.where(f,o,v))))
+  }
+ };
+ window._fbr&&window._fbr();
+})().catch(e=>{console.error(e);window.FB_ERR=String(e);window._fbr&&window._fbr()});
+</script>
+<script>
+let db=null,me=null,tab='home',cur=null,imgs={},users=[],forms=[];
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const UK=[...'users'],FK='forms';
+const LOAD=[['light','লাইট / আলো (Light)'],['fan','পাখা (Fan)'],['tvfp','টিভি / ফ্রিজ / পাম্প (TV/Fridge/Pump)'],['oth','অন্যান্য (Others)']];
+const S3=[['p3a','নতুন সংযোগ নিকটতম পোলে সম্ভব? (Feasible from nearest pole)'],['p3b','বিদ্যমান Consumer ID আছে? (Existing Consumer ID)'],['p3c','একই ঠিকানায় অন্য সংযোগ আছে? (Other connection at premises)']];
+const S4=[['p4a','আবেদনকারী মালিক/বৈধ দখলদার? (Owner / lawful occupant)'],['p4b','মালিকানার কাগজ আছে? (Ownership document)'],['p4c','NOC আছে? (NOC available)'],['p4d','নিজ নামে সংযোগ চলছে? (Connection in applicant name)']];
+const S5=[['p5a','পোল থেকে দূরত্ব অনুমোদিত সীমার মধ্যে? (Distance within limit)'],['p5b','আর্থিং (Earthing) আছে?'],['p5c','মিটার বসানোর উপযুক্ত জায়গা? (Meter location suitable)'],['p5d','রাস্তা/সরকারি জমিতে বাধা নেই? (No obstruction)']];
+const blank=()=>({hdr:{type:'Domestic',area:'Rural',ccc:'KATIAHAT'},a:{},load:{},ld:{},c:{},rem:'',sk:{},ag:{},ap:{}});
+
+async function init(){
+ try{await Promise.race([window.fbReady,new Promise((_,j)=>setTimeout(()=>j(1),20000))])}catch(e){}
+ if(window.FB_CONFIG_MISSING){$('#app').innerHTML='<div class="card err">firebaseConfig বসানো হয়নি। index.html ফাইলে আপনার Firebase config বসান (SETUP_GUIDE দেখুন)।</div>';return}
+ if(!window.FB){$('#app').innerHTML='<div class="card err">Firebase লোড হয়নি। Internet ও config চেক করুন। '+esc(window.FB_ERR||'')+'</div>';return}
+ db=FB.db;
+ try{window.NEEDSETUP=!(await db.doc('meta/setup').get()).exists}catch(e){window.NEEDSETUP=false}
+ FB.auth.onChange(async m=>{if(window.SETUPING)return;me=null;if(m){try{const d=await db.doc('users/'+m).get();if(d.exists&&d.data().active!==false)me={...JSON.parse(JSON.stringify(d.data())),mobile:m}}catch(e){}
+  if(!me){window.LERR='এই অ্যাকাউন্ট চালু নেই বা Admin প্রোফাইল বানায়নি। Admin-কে জানান।';try{await FB.auth.signOut()}catch(e){}return}}
+  window.LERR='';tab='home';render()});
+}
+async function loadUsers(){users=(await db.collection('users').get()).docs.map(d=>d.data())}
+async function loadForms(){const r=me.role==='admin'?await db.collection(FK).get():me.role==='cfo'?await db.where(FK,'status','==','submitted'):await db.where(FK,'owner','==',me.mobile);
+ forms=r.docs.map(d=>({id:d.id,...JSON.parse(JSON.stringify(d.data()))})).map(f=>LOCAL[f.id]&&(LOCAL[f.id].updated||0)>(f.updated||0)?LOCAL[f.id]:f).sort((a,b)=>(b.updated||0)-(a.updated||0))}
+function nav(){
+ $('#who').textContent=me?`${me.name} (${me.role})`:'';
+ const t=[['home','হোম'],...(me?.role==='agency'?[['new','নতুন ফর্ম']]:[]),...(me?.role==='admin'?[['new','নতুন ফর্ম'],['users','Users']]:[]),['track','Track'],['pw','Password']];
+ $('#nav').innerHTML=me?t.map(x=>`<button onclick="go('${x[0]}')">${x[1]}</button>`).join(' ')+' <button onclick="logout()">Logout</button>':'';
+}
+function go(t){tab=t;if(t==='new'){cur={id:null,status:'draft',owner:me.mobile,ownerName:me.name,data:blank()};imgs={}}render()}
+function logout(){FB.auth.signOut()}
+async function render0(){
+ nav();
+ if(!me&&window.NEEDSETUP)return setupView();
+ if(!me)return $('#app').innerHTML=`<div class="card"><h3>Login</h3><label>Mobile No</label><input id="lm" type="tel" inputmode="numeric" maxlength="10"><label>Password</label><input id="lp" type="password"><div class="bar"><button onclick="login()">Login</button></div><p id="le" class="err">${window.LERR||''}</p></div>`;
+ if(tab==='pw')return pwView();
+ if(tab==='users'){await loadUsers();return usersView()}
+ if(tab==='track')return trackView();
+ if(tab==='edit'||tab==='new')return formView();
+ if(tab==='prev')return prevView();
+ if(tab==='cfo')return cfoView();
+ await loadForms();
+ const mine0=me.role==='agency'?forms.filter(f=>f.owner===me.mobile):me.role==='cfo'?forms.filter(f=>f.status==='submitted'):forms;let mine=mine0,tabs='';if(me.role!=='agency'){const cmp=f=>f.master==='Complete'&&f.appNo,nc=mine0.filter(cmp).length;mine=mine0.filter(f=>htab==='complete'?cmp(f):!cmp(f));tabs=`<div class="bar"><button class="${htab==='pending'?'':'g'}" onclick="htab='pending';render()">Pending (${mine0.length-nc})</button><button class="${htab==='complete'?'s':'g'}" onclick="htab='complete';render()">Complete (${nc})</button></div>`}setTimeout(()=>hook(mine),0);
+ $('#app').innerHTML=`<div class="card"><h3>${me.role==='agency'?'আমার রেকর্ড':'সব রেকর্ড'} (${mine.length})</h3>${tabs}${mine.length?listTbl(mine):'<p>কোনো রেকর্ড নেই।</p>'}</div>`;
+}
+function listTbl(a){return `<div class="sc"><table><tr><th>Date</th><th>Applicant</th><th>App No</th><th>Status</th><th>Master Card</th>${me.role!=='agency'?'<th>Agency</th>':''}<th></th></tr>${a.map(f=>`<tr><td>${esc(f.data.hdr.idate||'')}</td><td>${esc(f.data.a.name||'-')}</td><td>${esc(f.appNo||'-')}</td><td><span class="tag ${f.status}">${f.status}</span></td><td>${f.master?`<span class="tag ${f.master}">${f.master}</span>`:'-'}</td>${me.role!=='agency'?`<td>${esc(f.ownerName)}</td>`:''}<td>${((f.status==='draft'||f.status==='returned')&&f.owner===me.mobile)||me.role==='admin'?`<button class="g" onclick="open_('${f.id}','edit')">Edit</button>`:''} <button class="g" onclick="open_('${f.id}','prev')">দেখুন</button>${(me.role==='cfo'&&f.status==='submitted'&&!f.cfoDone)||me.role==='admin'?` <button onclick="open_('${f.id}','cfo')">CFO</button>`:''}${me.role==='admin'&&f.status==='submitted'?` <button class="d" onclick="retForm('${f.id}')">Re-submit</button>`:''}</td></tr>`).join('')}</table></div>`}
+async function open_(id,t){let dd=null;try{dd=await db.doc(FK+'/'+id).get()}catch(e){}cur=dd&&dd.exists?{id,...JSON.parse(JSON.stringify(dd.data()))}:JSON.parse(JSON.stringify(forms.find(f=>f.id===id)));cur.data={...blank(),...cur.data};imgs={};for(const k of['1','2']){try{const d=await db.doc('imgs/'+id+'_'+k).get();if(d.exists)imgs[k]=d.data().d}catch(e){}}tab=t;render()}
+async function login(){const m=($('#lm').value||'').trim(),p=$('#lp').value;$('#le').textContent='';if(!/^\d{10}$/.test(m)||!p)return $('#le').textContent='১০ সংখ্যার মোবাইল ও password দিন';
+ try{await FB.auth.signIn(m,p)}catch(e){$('#le').textContent='Mobile বা password ভুল ('+(e.code||'error')+')'}}
+/* users */
+function uf(r,u={}){return `<div class="row"><div><label>নাম</label><input id="un" value="${esc(u.name)}"></div><div><label>Mobile (10 digit)</label><input id="um" type="tel" maxlength="10" value="${esc(u.mobile)}" ${u.mobile?'readonly':''}></div><div><label>Password ${u.mobile?'(ফাঁকা = অপরিবর্তিত)':''}</label><input id="up" type="text"></div>${r==='adm'?'':`<div><label>Role</label><select id="ur">${['agency','cfo','admin'].map(x=>`<option ${u.role===x?'selected':''}>${x}</option>`).join('')}</select></div><div><label>Active</label><select id="ua"><option value="1">Yes</option><option value="0" ${u.active===false?'selected':''}>No</option></select></div>`}</div>`}
+async function mkUser(){const n=$('#un').value.trim(),m=$('#um').value.trim(),p=$('#up').value,old=users.find(u=>u.mobile===m);
+ if(!n||!/^\d{10}$/.test(m)||(!old&&p.length<6))return alert('নাম, ১০ সংখ্যার মোবাইল ও password (কমপক্ষে ৬ অক্ষর) দিন');
+ try{if(!old){try{await FB.auth.createUser(m,p)}catch(e){if(e.code!=='auth/email-already-in-use')throw e}}
+  await db.doc('users/'+m).set({name:n,mobile:m,role:$('#ur').value,active:$('#ua').value==='1'})}catch(e){return alert('Failed: '+(e.code||'')+' '+(e.message||e))}
+ if(old&&p)alert('Password এখান থেকে বদলানো যায় না। ব্যবহারকারী নিজে "Password" বাটনে বদলাবেন।');
+ await loadUsers();tab='users';render()}
+function usersView(){const c=r=>users.filter(u=>u.role===r).length;
+ $('#app').innerHTML=`<div class="card"><h3>Users — Agency ${c('agency')}/25 · CFO ${c('cfo')}/2 · Admin ${c('admin')}/6</h3><div class="sc"><table><tr><th>Name</th><th>Mobile</th><th>Role</th><th>Active</th><th></th></tr>${users.map(u=>`<tr><td>${esc(u.name)}</td><td>${u.mobile}</td><td>${u.role}</td><td>${u.active===false?'No':'Yes'}</td><td><button class="g" onclick="editU('${u.mobile}')">Edit</button> <button class="d" onclick="delU('${u.mobile}')">Delete</button></td></tr>`).join('')}</table></div></div><div class="card"><h3 id="uh">নতুন User</h3><div id="uform">${uf('x')}</div><div class="bar"><button onclick="saveU()">Save</button></div></div>`}
+function editU(m){const u=users.find(x=>x.mobile===m);$('#uform').innerHTML=uf('x',u);$('#uh').textContent='Edit: '+u.name;scrollTo(0,document.body.scrollHeight)}
+async function saveU(){const m=$('#um').value.trim(),role=$('#ur').value,old=users.find(u=>u.mobile===m),lim={agency:25,cfo:2,admin:6};
+ if(!old&&users.filter(u=>u.role===role).length>=lim[role])return alert(role+' limit '+lim[role]+' পূর্ণ');await mkUser(false)}
+async function delU(m){if(m===me.mobile)return alert('নিজেকে মোছা যাবে না');if(await ask('মুছবেন?')){await db.doc('users/'+m).delete();await loadUsers();render()}}
+/* form */
+function yn(k,l,sec){const v=cur.data.c[k]||'';return `<div class="yn"><span>${l}</span><select onchange="cur.data.c['${k}']=this.value;tgl()"><option value="">—</option><option ${v==='Yes'?'selected':''}>Yes</option><option ${v==='No'?'selected':''}>No</option></select></div>`}
+function inp(g,k,l,t='text',cap=false){const v=cur.data[g][k]||'';return `<div><label>${l}</label><input id="f_${g}_${k}" type="${t}" value="${esc(v)}" ${ATTR[g+'.'+k]||''} ${cap?'style="text-transform:uppercase"':''} oninput="cur.data['${g}']['${k}']=${cap?'this.value.toUpperCase()':'this.value'};${g==='ld'?'calc()':''}">${CNT(g,k,v)}</div>`}
+function formView(){const d=cur.data;
+ $('#app').innerHTML=`<div class="card"><h3>হেডার</h3><div class="row">${inp('hdr','dtr','DTR Code (5)','text',1)}${inp('hdr','cap','DTR Capacity')}${inp('hdr','idate','Inspection Date','date')}${inp('hdr','zone','Zone (3)','text',1)}<div><label>CCC</label><input value="KATIAHAT" readonly></div>
+ <div><label>Connection Type</label><select onchange="cur.data.hdr.type=this.value">${['Domestic','Commercial'].map(x=>`<option ${d.hdr.type===x?'selected':''}>${x}</option>`).join('')}</select></div><div><label>Area</label><select onchange="cur.data.hdr.area=this.value">${['Rural','Urban'].map(x=>`<option ${d.hdr.area===x?'selected':''}>${x}</option>`).join('')}</select></div></div></div>
+ <div class="card"><h3>১. আবেদনকারীর বিবরণ (Applicant Details)</h3><div class="row">${inp('a','name','নাম (Name – CAPITAL LETTER)','text',1)}${inp('a','father','পিতা/স্বামীর নাম (Father/Husband – CAPITAL LETTER)','text',1)}${inp('a','addr','ঠিকানা (Address – CAPITAL LETTER)','text',1)}${inp('a','mob','মোবাইল (Mobile – 10 digit)','tel')}</div></div>
+ <div class="card"><h3>২. লোড যাচাই (Load Verification)</h3>${inp('ld','applied','Applied Load (Watt / KW)')}<div class="sc"><table><tr><th>বিবরণ</th><th>Qty</th><th>Watt</th><th>Total</th></tr>${LOAD.map(([k,l])=>`<tr><td>${l}</td><td><input type="number" value="${d.load[k+'q']||''}" oninput="cur.data.load['${k}q']=this.value;calc()"></td><td><input type="number" value="${d.load[k+'w']||''}" oninput="cur.data.load['${k}w']=this.value;calc()"></td><td id="t_${k}">${(d.load[k+'q']||0)*(d.load[k+'w']||0)}</td></tr>`).join('')}<tr><th colspan="3">মোট (Total Watt)</th><th id="tt"></th></tr></table></div>
+ <div class="yn"><span>মোট লোড Applied Load-এর সাথে মিলছে? (Total matches Applied Load)</span><select onchange="cur.data.c.match=this.value"><option value="">—</option>${['Yes','No'].map(x=>`<option ${d.c.match===x?'selected':''}>${x}</option>`).join('')}</select></div></div>
+ <div class="card"><h3>৩. প্রস্তাবিত সংযোগ (Proposed Connection)</h3>${S3.map(x=>yn(...x)).join('')}<div class="row"><div id="cidw" style="${cur.data.c.p3b==='Yes'?'':'display:none'}">${inp('a','cid','Consumer ID (numeric)')}</div>${inp('a','pole','Nearest Pole No (optional)')}</div></div>
+ <div class="card"><h3>৪. সম্পত্তি যাচাই (Property Verification)</h3>${S4.map(x=>yn(...x)).join('')}</div>
+ <div class="card"><h3>৫. সাইট পরিদর্শন (Site Inspection)</h3>${S5.map(x=>yn(...x)).join('')}</div>
+ <div class="card"><h3>৬. পরিদর্শনের নকশা (Inspection Sketch)</h3><div class="row">${inp('sk','dist','বাড়ি থেকে পোলের দূরত্ব, মিটার (Distance Pole to House, m)')}<div><label>ঘরের ধরন (House Type)</label><select onchange="cur.data.sk.type=this.value;skr()">${[['','—'],['Pakka','পাকা (Pakka)'],['Kaccha','কাঁচা (Kaccha)']].map(x=>`<option value="${x[0]}" ${(d.sk||{}).type===x[0]?'selected':''}>${x[1]}</option>`).join('')}</select></div><div><label>তলা (Floors)</label><select onchange="cur.data.sk.floor=this.value;skr()">${[['','—'],['1','১ তলা (1 Floor)'],['2','২ তলা (2 Floor)']].map(x=>`<option value="${x[0]}" ${(d.sk||{}).floor===x[0]?'selected':''}>${x[1]}</option>`).join('')}</select></div></div><div id="skb" class="sk">${skSVG(d.sk||{})}</div></div><div class="card"><h3>৭. মন্তব্য (Remarks)</h3><textarea rows="4" oninput="cur.data.rem=this.value">${esc(d.rem)}</textarea></div>
+ <div class="card"><h3>ছবি (Photos)</h3><label>Inspection Image — Gallery বা Camera</label><div class="bar"><button class="g" onclick="pick(1,false)">Gallery</button><button class="g" onclick="pick(1,true)">Camera</button></div><div id="p1">${pv(1)}</div>
+ <label>Agency Representative — Front Camera only</label><div class="bar"><button class="g" onclick="pick(2,'user')">Front Camera</button></div><div id="p2">${pv(2)}</div><input id="fi" type="file" accept="image/*" hidden></div>
+ <div class="card"><h3>স্বাক্ষর তথ্য</h3><div class="row">${inp('ag','name','এজেন্সি প্রতিনিধির নাম (Agency Representative Name)')}<div><label>আবেদনকারীর নাম (Applicant Name – auto)</label><input id="apn" readonly value="${esc(d.a.name)}"></div>${inp('ag','date','Date','date')}</div></div>
+ <div class="bar noprint"><button class="g" onclick="saveDraft()">${cur.status==='submitted'?'Save Changes':'Save Draft'}</button><button onclick="preview()">Preview</button></div>`;calc()}
+const pv=k=>imgs[k]?`<img class="img" src="${imgs[k]}">`:'<small>কোনো ছবি নেই</small>';
+function calc(){let t=0;LOAD.forEach(([k])=>{const v=(cur.data.load[k+'q']||0)*(cur.data.load[k+'w']||0);t+=v;const e=$('#t_'+k);if(e)e.textContent=v});cur.data.load.total=t;const e=$('#tt');if(e)e.textContent=t}
+function pick(k,cam){const f=$('#fi');f.value='';if(cam)f.setAttribute('capture',cam===true?'environment':cam);else f.removeAttribute('capture');
+ f.onchange=()=>{const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const s=Math.min(1,800/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=i.width*s;c.height=i.height*s;c.getContext('2d').drawImage(i,0,0,c.width,c.height);imgs[k]=c.toDataURL('image/jpeg',.55);$('#p'+k).innerHTML=pv(k)};i.src=r.result};if(f.files[0])r.readAsDataURL(f.files[0])};f.click()}
+async function save(st){const t=Date.now();if(!cur.id)cur.id='F'+t;cur.data.ap=cur.data.ap||{};cur.data.ap.name=cur.data.a.name||'';
+ try{await db.doc(FK+'/'+cur.id).set({owner:cur.owner,ownerName:cur.ownerName,status:st,data:cur.data,appNo:cur.appNo||'',master:cur.master||'',cfoDone:!!cur.cfoDone,created:cur.created||t,updated:t});
+ for(const k of['1','2'])if(imgs[k])await db.doc('imgs/'+cur.id+'_'+k).set({d:imgs[k],owner:cur.owner});const chk=await db.doc(FK+'/'+cur.id).get();if(!chk.exists||chk.data().updated!==t){alert('Save হয়নি (NOT saved) [got '+(chk.exists?chk.data().updated:'none')+' / want '+t+'].  আপনার role-এর এই কাজের অনুমতি আছে কিনা বা Internet ঠিক আছে কিনা দেখুন।');return false}LOCAL[cur.id]=JSON.parse(JSON.stringify({id:cur.id,...chk.data()}));cur.status=st;cur.updated=t;return true}catch(e){alert('Save FAILED / ব্যর্থ\nCode: '+(e&&e.code||'?')+'\n'+(e&&e.message||e)+'\n\nসম্ভাব্য কারণ: এই কাজের অনুমতি (role) নেই, বা ফর্মের status এখন edit-যোগ্য নয়, বা Internet সমস্যা।');return false}}
+function dlg(t,c){return new Promise(r=>{const o=document.createElement('div');o.style.cssText='position:fixed;inset:0;background:#0008;display:flex;align-items:center;justify-content:center;z-index:99;padding:16px';o.innerHTML='<div class="card" style="max-width:440px;width:100%;max-height:80vh;overflow:auto;white-space:pre-wrap"><div>'+esc(t)+'</div><div class="bar"><button id="dy">OK</button>'+(c?'<button class="g" id="dn">Cancel</button>':'')+'</div></div>';document.body.appendChild(o);applyLang(o);const x=v=>{o.remove();r(v)};o.querySelector('#dy').onclick=()=>x(true);const n=o.querySelector('#dn');if(n)n.onclick=()=>x(false)})}
+window.alert=t=>{dlg(t,false)};const ask=t=>dlg(t,true);
+let LANG='bn';try{LANG=localStorage.getItem('nsclang')||'bn'}catch(e){}
+const DICT={'হোম':'Home','নতুন ফর্ম':'New Form','আমার রেকর্ড':'My Records','সব রেকর্ড':'All Records','দেখুন':'View','কোনো রেকর্ড নেই।':'No records.','হেডার':'Header','স্বাক্ষর তথ্য':'Signature Details','পাওয়া যায়নি।':'Not found.','কোনো ছবি নেই':'No photo','লোড হচ্ছে…':'Loading…','প্রথম Admin তৈরি করুন':'Create first Admin','নতুন User':'New User','বিবরণ':'Item'};
+const tl=s=>{const t=s.trim();if(DICT[t])return s.replace(t,DICT[t]);return s.replace(/[\u0980-\u09FF][\u0980-\u09FFA-Za-z0-9\s\/\-,.:?]*\(([^)]*[A-Za-z][^)]*)\)/g,'$1')};
+function applyLang(root){const b=document.getElementById('lb');if(b)b.textContent=LANG==='bn'?'English':'বাংলা';if(LANG!=='en')return;const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),ns=[];while(w.nextNode())ns.push(w.currentNode);ns.forEach(n=>{if(n.parentElement&&!n.parentElement.closest('.a4'))n.nodeValue=tl(n.nodeValue)});root.querySelectorAll('[placeholder]').forEach(e=>e.placeholder=tl(e.placeholder))}
+function setLang(){LANG=LANG==='bn'?'en':'bn';try{localStorage.setItem('nsclang',LANG)}catch(e){}render()}
+async function render(){await render0();applyLang(document.body)}
+const ATTR={'hdr.dtr':'maxlength="5"','hdr.cap':'maxlength="3" inputmode="numeric"','hdr.zone':'maxlength="3"','a.mob':'maxlength="10" inputmode="numeric"','ld.applied':'inputmode="decimal"','a.cid':'inputmode="numeric"','sk.dist':'inputmode="decimal"'};
+addEventListener('input',e=>{if(e.target.id==='f_sk_dist')skr();if(['f_a_cid','f_a_mob','f_hdr_cap'].includes(e.target.id)){const t=e.target,q=t.value.replace(/[Oo]/g,'0').replace(/[০-৯]/g,ch=>ch.charCodeAt(0)-0x9e6).replace(/\D/g,'');if(q!==t.value){t.value=q;const pp=t.id.split('_');cur.data[pp[1]][pp[2]]=q}}const c=document.getElementById('c_'+String(e.target.id).slice(2));if(c)c.textContent=e.target.value.length+'/'+c.dataset.m;if(e.target.id==='f_a_name'){const x=document.getElementById('apn');if(x)x.value=e.target.value.toUpperCase()}});
+async function dlPdf(){try{if(!window.html2canvas||!window.jspdf)return alert('PDF library load হয়নি। Internet check করুন বা Print ব্যবহার করুন।');
+const w=document.createElement('div');w.style.cssText='position:fixed;left:-9999px;top:0;width:794px';w.innerHTML=doc(cur).replace('class="a4"','class="a4" style="width:794px;max-width:none;border:0;margin:0;height:auto;min-height:0"');document.body.appendChild(w);
+const cv=await html2canvas(w.firstChild,{scale:2,backgroundColor:'#ffffff'});w.remove();
+const p=new window.jspdf.jsPDF({unit:'mm',format:'a4'});let iw=210,ih=210*cv.height/cv.width;if(ih>297){ih=297;iw=297*cv.width/cv.height}
+p.addImage(cv.toDataURL('image/jpeg',.92),'JPEG',(210-iw)/2,0,iw,ih);
+const name='NSC_'+(cur.data.a.mob||'form')+'.pdf';p.save(name)}catch(e){alert('PDF Download ব্যর্থ: '+(e&&(e.code||e.message)||e)+'\nPrint বাটন চেপে Save as PDF করুন।')}}
+function CNT(g,k,v){const m=((ATTR[g+'.'+k]||'').match(/maxlength="(\d+)"/)||[])[1];return m?'<small id="c_'+g+'_'+k+'" data-m="'+m+'" style="color:var(--mu)">'+String(v).length+'/'+m+'</small>':''}
+function tgl(){const w=$('#cidw');if(w)w.style.display=cur.data.c.p3b==='Yes'?'':'none'}
+function skSVG(k){k=k||{};const dist=parseFloat(k.dist)||0,f=k.floor==='2'?2:1,pk=k.type==='Pakka',hx=40+Math.min(210,Math.max(70,dist*2.2)),w=100,H=36*f,top=125-H,hr=hx+w;
+let o='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 150" style="width:100%;max-height:150px;display:block;background:#fff" font-family="Arial,sans-serif" font-size="10"><g stroke="#000" fill="none" stroke-width="1.5"><path d="M0 125H400"/>';
+for(let x=6;x<400;x+=14)o+=`<path d="M${x} 125l-5 6" stroke-width=".8"/>`;
+o+='<path d="M40 125V18M24 28H56M30 38H50" stroke-width="3"/><circle cx="26" cy="26" r="2" fill="#000"/><circle cx="54" cy="26" r="2" fill="#000"/>';
+o+=`<path d="M54 28Q${(54+hx)/2} 54 ${hx} ${top+8}"/><path d="M46 38Q${(46+hx)/2} 64 ${hx} ${top+16}"/>`;
+o+=`<rect x="${hx}" y="${top}" width="${w}" height="${H}" fill="#fff"/>`;
+if(pk){o+=`<path d="M${hx-4} ${top}H${hr+4}" stroke-width="3"/>`;for(let i=1;i<f;i++)o+=`<path d="M${hx} ${125-36*i}H${hr}"/>`;for(let y=top+8;y<125;y+=9)o+=`<path d="M${hx} ${y}H${hr}" stroke-width=".4"/>`}
+else{o+=`<path d="M${hx-8} ${top}L${hx+w/2} ${top-26}L${hr+8} ${top}Z" fill="#fff"/>`;for(let x=hx+10;x<hr;x+=12)o+=`<path d="M${x} ${top-3}L${hx+w/2+(x-hx-w/2)*.2} ${top-23}" stroke-width=".6"/>`;for(let i=1;i<f;i++)o+=`<path d="M${hx} ${125-36*i}H${hr}"/>`}
+o+=`<rect x="${hx+w-30}" y="99" width="16" height="26"/><rect x="${hx+12}" y="${125-26}" width="20" height="14"/>`;
+if(f===2)o+=`<rect x="${hx+12}" y="${125-62}" width="20" height="14"/><rect x="${hx+w-34}" y="${125-62}" width="20" height="14"/>`;
+o+=`<rect x="${hx-8}" y="${top+20}" width="8" height="12" fill="#000"/>`;
+o+=`<path d="M40 142H${hx}M40 137V147M${hx} 137V147"/></g><g fill="#000" stroke="none"><text x="40" y="12" text-anchor="middle" font-weight="bold">POLE</text><text x="${(40+hx)/2}" y="139" text-anchor="middle">${dist||'?'} m</text><text x="${hx+w/2}" y="${top-(pk?8:30)}" text-anchor="middle" font-weight="bold">${k.type?(pk?'Pakka':'Kaccha'):'House'} · ${f} Floor</text></g></svg>`;
+return o}
+function skr(){const x=$('#skb');if(x)x.innerHTML=skSVG(cur.data.sk||{})}
+let htab='pending',LOCAL={};
+async function refresh(id){try{const d=await db.doc(FK+'/'+id).get();if(d.exists)LOCAL[id]={id,...JSON.parse(JSON.stringify(d.data()))}}catch(e){}}
+async function retForm(id){if(!await ask('Agency-র কাছে ফেরত পাঠাবেন? Agency আবার Edit করে Submit করতে পারবে। (Return to Agency for re-submit)'))return;try{await db.doc(FK+'/'+id).update({status:'returned',updated:Date.now()});await refresh(id)}catch(e){alert('Failed: '+(e&&e.message||e));return}render()}
+function pwView(){$('#app').innerHTML=`<div class="card"><h3>Password পরিবর্তন (Change Password)</h3><label>বর্তমান Password</label><input id="po" type="password"><label>নতুন Password (কমপক্ষে ৬ অক্ষর)</label><input id="pn" type="password"><div class="bar"><button onclick="chPw()">Save</button></div></div>`}
+async function chPw(){const o=$('#po').value,n=$('#pn').value;if(!o||n.length<6)return alert('বর্তমান password ও নতুন password (কমপক্ষে ৬ অক্ষর) দিন');try{await FB.auth.changePw(o,n);alert('✔ Password বদলেছে');tab='home';render()}catch(e){alert('Failed: '+(e.code||e.message||e))}}
+function setupView(){$('#app').innerHTML=`<div class="card"><h3>প্রথম Admin তৈরি করুন (First-time Setup)</h3><p>এই অ্যাপে এখনও কোনো Admin নেই। এই ফর্মে যে নাম ও মোবাইল দেবেন, সেই ব্যক্তিই Admin হবে। বাকি সবাইকে পরে Users মেনু থেকে বানাতে পারবেন।</p><label>নাম (Name)</label><input id="sn"><label>মোবাইল (Mobile – 10 digit)</label><input id="sm" type="tel" inputmode="numeric" maxlength="10"><label>Password (কমপক্ষে ৬ অক্ষর)</label><input id="sp" type="password"><label>Password আবার লিখুন</label><input id="sp2" type="password"><div class="bar"><button onclick="setupAdmin()">Admin তৈরি করুন (Create Admin)</button></div><p id="se" class="err">${window.SERR||''}</p></div>`}
+async function setupAdmin(){const n=$('#sn').value.trim(),m=$('#sm').value.trim(),p=$('#sp').value,p2=$('#sp2').value,er=$('#se');er.textContent='';
+ if(!n||!/^\d{10}$/.test(m)||p.length<6)return er.textContent='নাম, ১০ সংখ্যার মোবাইল ও password (কমপক্ষে ৬ অক্ষর) দিন';if(p!==p2)return er.textContent='দুই password মেলেনি';
+ window.SETUPING=true;window.SERR='';
+ try{try{await FB.auth.signUp(m,p)}catch(e){if(e.code==='auth/email-already-in-use')await FB.auth.signIn(m,p);else throw e}
+  await db.batchSet([['users/'+m,{name:n,mobile:m,role:'admin',active:true}],['meta/setup',{done:true,firstAdmin:m,created:Date.now()}]]);
+  me={name:n,mobile:m,role:'admin',active:true};window.NEEDSETUP=false;window.SETUPING=false;tab='home';render()}
+ catch(e){window.SERR='Setup ব্যর্থ: '+(e.code||'')+' '+(e.message||e)+' (হয়তো Admin আগেই তৈরি হয়েছে, পেজ রিফ্রেশ করুন)';window.SETUPING=false;try{await FB.auth.signOut()}catch(x){}try{window.NEEDSETUP=!(await db.doc('meta/setup').get()).exists}catch(x){}render()}}
+let HL=[];
+function hook(a){HL=a;const h=$('#app .card h3'),t=$('#app .sc');if(!h||!t)return;t.id='hl';h.insertAdjacentHTML('afterend','<input id="hq" type="tel" inputmode="numeric" placeholder="মোবাইল নম্বর দিয়ে সার্চ (Search by Mobile)" oninput="hs()" style="margin:6px 0">');applyLang(document.body)}
+function hs(){const q=$('#hq').value.trim(),a=q?HL.filter(f=>(f.data.a.mob||'').includes(q)):HL,h=a.length?listTbl(a).replace('<div class="sc">','<div class="sc" id="hl">'):'<p id="hl">পাওয়া যায়নি (Not found)</p>';$('#hl').outerHTML=h}
+function normMob(s){s=String(s||'').replace(/[Oo]/g,'0').replace(/[০-৯]/g,c=>c.charCodeAt(0)-0x9e6).replace(/\D/g,'');if(s.length===12&&s.startsWith('91'))s=s.slice(2);else if(s.length===11&&s[0]==='0')s=s.slice(1);return s}
+function validate(){document.querySelectorAll('input[id^="f_"]').forEach(i=>{const p=i.id.split('_');if(cur.data[p[1]])cur.data[p[1]][p[2]]=i.style.textTransform==='uppercase'?i.value.toUpperCase():i.value});const d=cur.data,m=[],e=(v,n)=>{if(v===undefined||v===null||String(v).trim()==='')m.push(n)};
+[['dtr','DTR Code'],['cap','DTR Capacity'],['idate','Inspection Date'],['zone','Zone']].forEach(([k,n])=>e(d.hdr[k],n));
+[['name','Name'],['father','Father/Husband'],['addr','Address']].forEach(([k,n])=>e(d.a[k],n));
+const mb=normMob(d.a.mob);if(/^[6-9]\d{9}$/.test(mb))d.a.mob=mb;else m.push('Mobile: "'+(d.a.mob||'')+'" — ভারতীয় মোবাইল নং লিখুন (০ বা +91 ছাড়া ১০ সংখ্যা, 6-9 দিয়ে শুরু)');
+e(d.ld.applied,'Applied Load');LOAD.forEach(([k,l])=>{e(d.load[k+'q'],l+' Qty');e(d.load[k+'w'],l+' Watt')});
+[['match','Total matches Applied Load'],...S3,...S4,...S5].forEach(([k,l])=>e(d.c[k],l));
+d.sk=d.sk||{};e(d.sk.dist,'Sketch: Distance Pole-House (m)');e(d.sk.type,'Sketch: House Type');e(d.sk.floor,'Sketch: Floors');if(d.sk.dist&&!/^\d+(\.\d+)?$/.test(String(d.sk.dist).trim()))m.push('Distance: number only');e(d.rem,'Remarks');e(d.ag.name,'Agency Rep Name');e(d.ag.date,'Agency Rep Date');const dg=x=>String(x||'').replace(/[Oo]/g,'0').replace(/[০-৯]/g,c=>c.charCodeAt(0)-0x9e6).replace(/\D/g,'');if(d.c.p3b==='Yes'){d.a.cid=dg(d.a.cid);e(d.a.cid,'Consumer ID')}else d.a.cid='';d.hdr.cap=dg(d.hdr.cap)||d.hdr.cap;const rx=(v,r,n)=>{if(v!==undefined&&String(v).trim()!==''&&!r.test(String(v).trim()))m.push(n)};rx(d.hdr.dtr,/^[A-Za-z0-9]{5}$/,'DTR Code: 5 character (letters/digits)');rx(d.hdr.cap,/^\d{2,3}$/,'DTR Capacity: 2-3 digit number');rx(d.hdr.zone,/^[A-Za-z0-9]{3}$/,'Zone: 3 character (letters/digits)');if(d.c.p3b==='Yes')rx(d.a.cid,/^\d+$/,'Consumer ID: numeric only');rx(d.ld.applied,/^\d+(\.\d+)?$/,'Applied Load: number only');LOAD.forEach(([k,l])=>{rx(d.load[k+'q'],/^\d+$/,l+' Qty: number only');rx(d.load[k+'w'],/^\d+(\.\d+)?$/,l+' Watt: number only')});d.ap.name=d.a.name;
+if(!imgs[1])m.push('Inspection Image');if(!imgs[2])m.push('Agency Representative Image');return m}
+async function saveDraft(){document.querySelectorAll('input[id^="f_"]').forEach(i=>{const p=i.id.split('_');if(cur.data[p[1]])cur.data[p[1]][p[2]]=i.style.textTransform==='uppercase'?i.value.toUpperCase():i.value});if(await save(cur.status||'draft'))alert(cur.status==='submitted'?'✔ পরিবর্তন সেভ হয়েছে (Changes saved). Status: Submitted':'✔ Draft সেভ হয়েছে। পরে হোম থেকে Edit চেপে শেষ করতে পারবেন।')}
+async function preview(){const m=validate();if(m.length)return alert('নিচের বক্সগুলো পূরণ করুন (Required):\n\n'+m.join('\n'));if(await save(cur.status||'draft')){tab='prev';render()}}
+function doc(f){const d=f.data,L=d.load,c=d.c,Y=(l,k)=>`<tr><td>${l}</td><td class="y">${c[k]||'-'}</td></tr>`;
+ return `<div class="a4">${f.master==='Complete'&&f.appNo?'<div class="wm">Complete</div>':''}<div class="fit"><h2>WEST BENGAL STATE ELECTRICITY DISTRIBUTION COMPANY LIMITED</h2><h2>NSC INSPECTION REPORT (NEW SERVICE CONNECTION)</h2>
+ <table style="margin-top:6px"><tr><td>DTR Code: ${esc(d.hdr.dtr)}</td><td>DTR ক্ষমতা (Capacity): ${esc(d.hdr.cap)}</td><td>পরিদর্শনের তারিখ (Inspection Date): ${esc(d.hdr.idate)}</td></tr><tr><td>জোন (Zone): ${esc(d.hdr.zone)}</td><td>CCC: KATIAHAT</td><td>আবেদন নং (Application No.): ${esc(f.appNo)}</td></tr><tr><td>সংযোগের ধরন (Type): ${esc(d.hdr.type)}</td><td>এলাকা (Area): ${esc(d.hdr.area)}</td><td>মাস্টার কার্ড (Master Card): ${esc(f.master)}</td></tr></table>
+ <h4>১. আবেদনকারীর বিবরণ (Applicant Details)</h4><table><tr><td>নাম (Name)</td><td class="v">${esc(d.a.name)}</td></tr><tr><td>পিতা/স্বামীর নাম (Father/Husband)</td><td class="v">${esc(d.a.father)}</td></tr><tr><td>ঠিকানা (Address)</td><td class="v">${esc(d.a.addr)}</td></tr><tr><td>মোবাইল (Mobile)</td><td class="v">${esc(d.a.mob)}</td></tr></table>
+ <h4>২. লোড যাচাই (Load Verification) — Applied Load: ${esc(d.ld.applied)}</h4><table><tr><th>বিবরণ (Item)</th><th>সংখ্যা (Qty)</th><th>ওয়াট (Watt)</th><th>মোট (Total)</th></tr>${LOAD.map(([k,l])=>`<tr><td>${l}</td><td>${L[k+'q']||''}</td><td>${L[k+'w']||''}</td><td>${(L[k+'q']||0)*(L[k+'w']||0)}</td></tr>`).join('')}<tr><th colspan="3">মোট ওয়াট (Total Watt)</th><th>${L.total||0}</th></tr></table><table>${Y('মোট লোড Applied Load-এর সাথে মিলছে? (Total matches Applied Load)','match')}</table>
+ <h4>৩. প্রস্তাবিত সংযোগ (Proposed Connection)</h4><table>${S3.map(([k,l])=>Y(l,k)).join('')}<tr><td>পোল নং / Consumer ID (Pole No)</td><td class="v">${d.c.p3b==='Yes'?'Consumer ID: '+esc(d.a.cid)+' / ':''}Pole: ${esc(d.a.pole)}</td></tr></table>
+ <h4>৪. সম্পত্তি যাচাই (Property Verification)</h4><table>${S4.map(([k,l])=>Y(l,k)).join('')}</table>
+ <h4>৫. সাইট পরিদর্শন (Site Inspection)</h4><table>${S5.map(([k,l])=>Y(l,k)).join('')}</table>
+ <h4>৬. পরিদর্শনের নকশা (Inspection Sketch)</h4><div style="border:1px solid #444;padding:2px">${skSVG(d.sk||{})}</div><h4>৭. মন্তব্য (Remarks)</h4><div style="border:1px solid #444;min-height:55px;padding:6px;font-size:12px;white-space:pre-wrap">${esc(d.rem)}</div>
+ <table style="margin-top:6px"><tr><td style="text-align:center">পরিদর্শনের ছবি (Inspection Image)<br>${imgs[1]?`<img class="img" src="${imgs[1]}">`:''}</td><td style="text-align:center">এজেন্সি প্রতিনিধি (Agency Representative)<br>${imgs[2]?`<img class="img" src="${imgs[2]}">`:''}</td></tr></table>
+ <table style="margin-top:6px"><tr><td>এজেন্সি প্রতিনিধি (Agency Rep): ${esc(d.ag.name)}<br><br>স্বাক্ষর (Signature): ________ তারিখ (Date): ${esc(d.ag.date)}</td><td>আবেদনকারী (Applicant): ${esc(d.a.name)}<br><br>স্বাক্ষর (Signature): ________</td><td>WBSEDCL আধিকারিক (Official)<br><br>স্বাক্ষর (Signature): ________</td></tr></table></div></div>`}
+function prevView(){const ed=((cur.status==='draft'||cur.status==='returned')&&cur.owner===me.mobile)||me.role==='admin';
+ $('#app').innerHTML=`<div class="bar noprint">${ed?`<button class="g" onclick="tab='edit';render()">← Edit</button>${(cur.status==='draft'||cur.status==='returned')?'<button class="s" onclick="finalSubmit()">Final Submit</button>':''}`:''}<button onclick="dlPdf()">PDF Download (A4)</button><button class="g" onclick="window.print()">Print</button><button class="g" onclick="tab='home';render()">Back</button></div>${doc(cur)}<p class="noprint"><small>Print option: Print ডায়ালগে "Save as PDF", Paper size A4, Margins None।</small></p>`}
+async function finalSubmit(){const m=validate();if(m.length)return alert('Required:\n'+m.join('\n')+'\n\n"← Edit" চেপে ফর্মে ফিরে সব বক্স ভরুন');if(!await ask('Final Submit করলে আর edit করা যাবে না। নিশ্চিত?'))return;if(await save('submitted')){alert('Submit হয়েছে');tab='home';render()}}
+/* CFO */
+function cfoView(){if(me.role==='cfo'&&cur.cfoDone){alert('Already submitted. Only Admin can edit.');tab='home';return render()}$('#app').innerHTML=`<div class="card"><h3>CFO: ${esc(cur.data.a.name)}</h3><label>Application No</label><input id="can" value="${esc(cur.appNo)}"><label>Master Card</label><select id="cmc">${['','Complete','Pending'].map(x=>`<option ${cur.master===x?'selected':''}>${x}</option>`).join('')}</select><div class="bar"><button class="s" onclick="cfoSave()">Submit</button><button class="g" onclick="tab='prev';render()">Preview</button><button class="g" onclick="tab='home';render()">Back</button></div></div>`}
+async function cfoSave(){const a=$('#can').value.trim(),m=$('#cmc').value;if(!a||!m)return alert('Application No ও Master Card status দিন');if(me.role==='cfo'&&!await ask('Submit করার পর আর edit করা যাবে না। নিশ্চিত? (Cannot edit after submit)'))return;await db.doc(FK+'/'+cur.id).update({appNo:a,master:m,cfoDone:true,updated:Date.now()});await refresh(cur.id);alert('Saved');tab='home';render()}
+/* track */
+async function trackView(){await loadForms();$('#app').innerHTML=`<div class="card"><h3>Track</h3><input id="tq" placeholder="Application No বা মোবাইল নম্বর (Mobile)"><div class="bar"><button onclick="doTrack()">Search</button></div><div id="tr"></div></div>`;doTrack(1)}
+function doTrack(all){const q=($('#tq')?.value||'').trim();let a=me.role==='agency'?forms.filter(f=>f.owner===me.mobile):me.role==='cfo'?forms.filter(f=>f.status==='submitted'):forms;if(q)a=a.filter(f=>(f.appNo||'')===q||(f.data.a.mob||'').includes(q));$('#tr').innerHTML=a.length?listTbl(a):'<p>পাওয়া যায়নি।</p>'}
+function fit1(on){document.querySelectorAll('.fit').forEach(e=>{e.style.zoom=1;if(on){const h=e.scrollHeight,m=281*3.7795-6;if(h>m)e.style.zoom=(m/h).toFixed(3)}})}
+addEventListener('beforeprint',()=>fit1(true));addEventListener('afterprint',()=>fit1(false));
+init();
+</script></body></html>
