@@ -29,7 +29,7 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
 @page{size:A4;margin:0}
 @media print{body{background:#fff}header,.noprint,.card{display:none!important}main{padding:0;max-width:none}.a4{border:0;margin:0;width:210mm;height:296mm;max-height:296mm;overflow:hidden;page-break-after:avoid}}
 </style></head><body>
-<header><b>WBSEDCL – NSC Inspection (Katiahat) · FB5</b><button onclick="setLang()" id="lb">English</button><span id="who"></span><span id="nav"></span></header>
+<header><b>WBSEDCL – NSC Inspection (Katiahat) · FB5b</b><button onclick="setLang()" id="lb">English</button><span id="who"></span><span id="nav"></span></header>
 <main id="app">লোড হচ্ছে…</main>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -243,6 +243,7 @@ async function delMonth(){const ym=$('#dm').value;if(!ym)return alert('মাস
  if(!list.length)return alert('এই মাসে কোনো ফর্ম নেই');if(!await ask(ym+' মাসের '+list.length+'টি ফর্ম (ও ছবি) স্থায়ীভাবে মুছে যাবে। Excel/PDF নামিয়ে রেখেছেন? নিশ্চিত?'))return;
  let n=0;try{for(const f of list){await db.doc(FK+'/'+f.id).delete();for(const k of['1','2']){try{await db.doc('imgs/'+f.id+'_'+k).delete()}catch(e){}}delete LOCAL[f.id];n++}}catch(e){alert('মাঝপথে ব্যর্থ ('+n+'টি মোছা হয়েছে): '+(e.code||'')+' '+(e.message||e))}
  alert('✔ '+n+'টি ফর্ম মোছা হয়েছে');render()}
+function toast(m){const t=document.createElement('div');t.textContent=m;t.style.cssText='position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#18794e;color:#fff;padding:10px 18px;border-radius:10px;z-index:99;font-weight:600;max-width:90%';document.body.appendChild(t);setTimeout(()=>t.remove(),2800)}
 let imgDirty={},AST=null,ASV=false,ASP=false;
 function setInd(m,err){const e=$('#svi');if(e){e.textContent=m;e.style.color=err?'var(--er)':'var(--ok)'}}
 function autoSave(){if(!cur||!(tab==='edit'||tab==='new'))return;if(cur.status!=='draft'&&cur.status!=='returned')return;cur._d=1;setInd('… সেভ হচ্ছে (Saving…)');clearTimeout(AST);AST=setTimeout(doAuto,1500)}
@@ -258,11 +259,11 @@ function validate(){document.querySelectorAll('input[id^="f_"]').forEach(i=>{con
 [['dtr','DTR Code'],['cap','DTR Capacity'],['idate','Inspection Date'],['zone','Zone']].forEach(([k,n])=>e(d.hdr[k],n));
 [['name','Name'],['father','Father/Husband'],['addr','Address']].forEach(([k,n])=>e(d.a[k],n));
 const mb=normMob(d.a.mob);if(/^[6-9]\d{9}$/.test(mb))d.a.mob=mb;else m.push('Mobile: "'+(d.a.mob||'')+'" — ভারতীয় মোবাইল নং লিখুন (০ বা +91 ছাড়া ১০ সংখ্যা, 6-9 দিয়ে শুরু)');
-e(d.ld.applied,'Applied Load');LOAD.forEach(([k,l])=>{e(d.load[k+'q'],l+' Qty');e(d.load[k+'w'],l+' Watt')});
+e(d.ld.applied,'Applied Load');
 [['match','Total matches Applied Load'],...S3,...S4,...S5].forEach(([k,l])=>e(d.c[k],l));
 d.sk=d.sk||{};e(d.sk.dist,'Sketch: Distance Pole-House (m)');e(d.sk.type,'Sketch: House Type (Pakka/Kaccha)');e(d.sk.kind,'Sketch: Old / New House');if(d.sk.dist&&!/^\d+(\.\d+)?$/.test(String(d.sk.dist).trim()))m.push('Distance: number only');e(d.rem,'Remarks');e(d.ag.name,'Agency Rep Name');e(d.ag.date,'Agency Rep Date');const dg=x=>String(x||'').replace(/[Oo]/g,'0').replace(/[০-৯]/g,c=>c.charCodeAt(0)-0x9e6).replace(/\D/g,'');if(d.c.p3b==='Yes'){d.a.cid=dg(d.a.cid);e(d.a.cid,'Consumer ID')}else d.a.cid='';d.hdr.cap=dg(d.hdr.cap)||d.hdr.cap;const rx=(v,r,n)=>{if(v!==undefined&&String(v).trim()!==''&&!r.test(String(v).trim()))m.push(n)};rx(d.hdr.dtr,/^[A-Za-z0-9]{5}$/,'DTR Code: 5 character (letters/digits)');rx(d.hdr.cap,/^\d{2,3}$/,'DTR Capacity: 2-3 digit number');rx(d.hdr.zone,/^[A-Za-z0-9]{3}$/,'Zone: 3 character (letters/digits)');if(d.c.p3b==='Yes')rx(d.a.cid,/^\d+$/,'Consumer ID: numeric only');rx(d.ld.applied,/^\d+(\.\d+)?$/,'Applied Load: number only');LOAD.forEach(([k,l])=>{rx(d.load[k+'q'],/^\d+$/,l+' Qty: number only');rx(d.load[k+'w'],/^\d+(\.\d+)?$/,l+' Watt: number only')});d.ap.name=d.a.name;
 if(!imgs[1])m.push('Inspection Image');if(!imgs[2])m.push('Agency Representative Image');return m}
-async function saveDraft(){document.querySelectorAll('input[id^="f_"]').forEach(i=>{const p=i.id.split('_');if(cur.data[p[1]])cur.data[p[1]][p[2]]=i.style.textTransform==='uppercase'?i.value.toUpperCase():i.value});if(await save(cur.status||'draft'))alert(cur.status==='submitted'?'✔ পরিবর্তন সেভ হয়েছে (Changes saved). Status: Submitted':'✔ Draft সেভ হয়েছে। পরে হোম থেকে Edit চেপে শেষ করতে পারবেন।')}
+async function saveDraft(){document.querySelectorAll('input[id^="f_"]').forEach(i=>{const p=i.id.split('_');if(cur.data[p[1]])cur.data[p[1]][p[2]]=i.style.textTransform==='uppercase'?i.value.toUpperCase():i.value});clearTimeout(AST);if(await save(cur.status||'draft')){toast(cur.status==='submitted'?'✔ পরিবর্তন সেভ হয়েছে (Changes saved)':'✔ Draft সেভ হয়েছে (Draft saved)');tab='home';render()}}
 async function preview(){const m=validate();if(m.length)return alert('নিচের বক্সগুলো পূরণ করুন (Required):\n\n'+m.join('\n'));if(await save(cur.status||'draft')){tab='prev';render()}}
 function doc(f){const d=f.data,L=d.load,c=d.c,Y=(l,k)=>`<tr><td>${l}</td><td class="y">${c[k]||'-'}</td></tr>`;
  return `<div class="a4">${f.master==='Complete'&&f.appNo?'<div class="wm">Complete</div>':''}<div class="fit"><h2>WEST BENGAL STATE ELECTRICITY DISTRIBUTION COMPANY LIMITED</h2><h2>NSC INSPECTION REPORT (NEW SERVICE CONNECTION)</h2>
