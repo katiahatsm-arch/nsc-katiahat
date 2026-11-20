@@ -29,7 +29,7 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
 @page{size:A4;margin:0}
 @media print{body{background:#fff}header,.noprint,.card{display:none!important}main{padding:0;max-width:none}.a4{border:0;margin:0;width:210mm;height:296mm;max-height:296mm;overflow:hidden;page-break-after:avoid}}
 </style></head><body>
-<header><b>WBSEDCL – NSC Inspection (Katiahat) · FB4b</b><button onclick="setLang()" id="lb">English</button><span id="who"></span><span id="nav"></span></header>
+<header><b>WBSEDCL – NSC Inspection (Katiahat) · FB5</b><button onclick="setLang()" id="lb">English</button><span id="who"></span><span id="nav"></span></header>
 <main id="app">লোড হচ্ছে…</main>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -37,13 +37,13 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
 <script>window.fbReady=window.fbReady||new Promise(r=>{window._fbr=r});</script>
 <script type="module">
 /* ====== এখানে আপনার Firebase config বসান (Project settings > Your apps > Web app) ====== */
-const firebaseConfig = {
-  apiKey: "AIzaSyCrFwo_u3SBf3Tn90bXXr9gbHaVXWkPuYE",
-  authDomain: "nsc-katiahat.firebaseapp.com",
-  projectId: "nsc-katiahat",
-  storageBucket: "nsc-katiahat.firebasestorage.app",
-  messagingSenderId: "737315969866",
-  appId: "1:737315969866:web:dfa603ae9e4b1cb59bbfb3"
+const firebaseConfig={
+  apiKey:"PASTE_API_KEY",
+  authDomain:"PASTE_PROJECT_ID.firebaseapp.com",
+  projectId:"PASTE_PROJECT_ID",
+  storageBucket:"PASTE_PROJECT_ID.firebasestorage.app",
+  messagingSenderId:"PASTE_SENDER_ID",
+  appId:"PASTE_APP_ID"
 };
 /* ================================================================================== */
 (async()=>{
@@ -100,7 +100,7 @@ function nav(){
  const t=[['home','হোম'],...(me?.role==='agency'||ST()?[['new','নতুন ফর্ম']]:[]),...(ST()?[['users','Users'],['report','Report']]:[]),['track','Track'],['pw','Password']];
  $('#nav').innerHTML=me?t.map(x=>`<button onclick="go('${x[0]}')">${x[1]}</button>`).join(' ')+' <button onclick="logout()">Logout</button>':'';
 }
-function go(t){tab=t;if(t==='new'){cur={id:null,status:'draft',owner:me.mobile,ownerName:me.name,data:blank()};imgs={}}render()}
+function go(t){tab=t;if(t==='new'){cur={id:null,status:'draft',owner:me.mobile,ownerName:me.name,data:blank()};imgs={};imgDirty={}}render()}
 function logout(){FB.auth.signOut()}
 async function render0(){
  nav();
@@ -118,7 +118,7 @@ async function render0(){
  $('#app').innerHTML=`<div class="card"><h3>${me.role==='agency'?'আমার রেকর্ড':'সব রেকর্ড'} (${mine.length})</h3>${tabs}${mine.length?listTbl(mine):'<p>কোনো রেকর্ড নেই।</p>'}</div>`;
 }
 function listTbl(a){return `<div class="sc"><table><tr><th>Date</th><th>Applicant</th><th>App No</th><th>Status</th><th>Master Card</th>${me.role!=='agency'?'<th>Agency</th>':''}<th></th></tr>${a.map(f=>`<tr><td>${esc(f.data.hdr.idate||'')}</td><td>${esc(f.data.a.name||'-')}</td><td>${esc(f.appNo||'-')}</td><td><span class="tag ${f.status}">${f.status}</span></td><td>${f.master?`<span class="tag ${f.master}">${f.master}</span>`:'-'}</td>${me.role!=='agency'?`<td>${esc(f.ownerName)}</td>`:''}<td>${((f.status==='draft'||f.status==='returned')&&f.owner===me.mobile)||ST()?`<button class="g" onclick="open_('${f.id}','edit')">Edit</button>`:''} <button class="g" onclick="open_('${f.id}','prev')">দেখুন</button>${(me.role==='cfo'&&f.status==='submitted'&&!f.cfoDone)||ST()?` <button onclick="open_('${f.id}','cfo')">CFO</button>`:''}${ST()&&(f.status==='submitted'||f.status==='rejected')?` <button class="d" onclick="retForm('${f.id}')">Re-submit</button>`:''}${ST()&&f.status==='submitted'?` <button class="d" onclick="rejForm('${f.id}')">Reject</button>`:''}${me.role==='admin'?` <button class="d" onclick="delForm('${f.id}')">Delete</button>`:''}</td></tr>`).join('')}</table></div>`}
-async function open_(id,t){let dd=null;try{dd=await db.doc(FK+'/'+id).get()}catch(e){}cur=dd&&dd.exists?{id,...JSON.parse(JSON.stringify(dd.data()))}:JSON.parse(JSON.stringify(forms.find(f=>f.id===id)));cur.data={...blank(),...cur.data};imgs={};for(const k of['1','2']){try{const d=await db.doc('imgs/'+id+'_'+k).get();if(d.exists)imgs[k]=d.data().d}catch(e){}}tab=t;render()}
+async function open_(id,t){let dd=null;try{dd=await db.doc(FK+'/'+id).get()}catch(e){}cur=dd&&dd.exists?{id,...JSON.parse(JSON.stringify(dd.data()))}:JSON.parse(JSON.stringify(forms.find(f=>f.id===id)));cur.data={...blank(),...cur.data};imgs={};imgDirty={};for(const k of['1','2']){try{const d=await db.doc('imgs/'+id+'_'+k).get();if(d.exists)imgs[k]=d.data().d}catch(e){}}tab=t;render()}
 async function login(){const m=($('#lm').value||'').trim(),p=$('#lp').value;$('#le').textContent='';if(!/^\d{10}$/.test(m)||!p)return $('#le').textContent='১০ সংখ্যার মোবাইল ও password দিন';
  let ver=0,reset=false;try{const g=await db.doc('login/'+m).get();if(g.exists){ver=g.data().ver||0;reset=!!g.data().reset}}catch(e){}
  if(reset){if(p.length<6)return $('#le').textContent='নতুন password কমপক্ষে ৬ অক্ষর দিন';
@@ -143,7 +143,7 @@ async function delU(m){if(m===me.mobile)return alert('নিজেকে মো�
 function yn(k,l,sec){const v=cur.data.c[k]||'';return `<div class="yn"><span>${l}</span><select onchange="cur.data.c['${k}']=this.value;tgl()"><option value="">—</option><option ${v==='Yes'?'selected':''}>Yes</option><option ${v==='No'?'selected':''}>No</option></select></div>`}
 function inp(g,k,l,t='text',cap=false){const v=cur.data[g][k]||'';return `<div><label>${l}</label><input id="f_${g}_${k}" type="${t}" value="${esc(v)}" ${ATTR[g+'.'+k]||''} ${cap?'style="text-transform:uppercase"':''} oninput="cur.data['${g}']['${k}']=${cap?'this.value.toUpperCase()':'this.value'};${g==='ld'?'calc()':''}">${CNT(g,k,v)}</div>`}
 function formView(){const d=cur.data;
- $('#app').innerHTML=`<div class="card"><h3>হেডার</h3><div class="row">${inp('hdr','dtr','DTR Code (5)','text',1)}${inp('hdr','cap','DTR Capacity')}${inp('hdr','idate','Inspection Date','date')}${inp('hdr','zone','Zone (3)','text',1)}<div><label>CCC</label><input value="KATIAHAT" readonly></div>
+ $('#app').innerHTML=`<div id="svi" class="noprint" style="position:sticky;top:0;z-index:5;background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:6px 10px;margin-bottom:6px;font-size:13px;color:var(--mu)">${cur.status==='draft'||cur.status==='returned'?'Auto-save চালু: প্রতিটি ঘর ভরলে নিজে সেভ হবে (Auto-save ON)':'Auto-save বন্ধ (Submit-করা ফর্ম)। বদল শেষে নিচে Save Changes চাপুন'}</div><div class="card"><h3>হেডার</h3><div class="row">${inp('hdr','dtr','DTR Code (5)','text',1)}${inp('hdr','cap','DTR Capacity')}${inp('hdr','idate','Inspection Date','date')}${inp('hdr','zone','Zone (3)','text',1)}<div><label>CCC</label><input value="KATIAHAT" readonly></div>
  <div><label>Connection Type</label><select onchange="cur.data.hdr.type=this.value">${['Domestic','Commercial','Others'].map(x=>`<option ${d.hdr.type===x?'selected':''}>${x}</option>`).join('')}</select></div><div><label>Area</label><select onchange="cur.data.hdr.area=this.value">${['Rural','Urban'].map(x=>`<option ${d.hdr.area===x?'selected':''}>${x}</option>`).join('')}</select></div></div></div>
  <div class="card"><h3>১. আবেদনকারীর বিবরণ (Applicant Details)</h3><div class="row">${inp('a','name','নাম (Name – CAPITAL LETTER)','text',1)}${inp('a','father','পিতা/স্বামীর নাম (Father/Husband – CAPITAL LETTER)','text',1)}${inp('a','addr','ঠিকানা (Address – CAPITAL LETTER)','text',1)}${inp('a','mob','মোবাইল (Mobile – 10 digit)','tel')}</div></div>
  <div class="card"><h3>২. লোড যাচাই (Load Verification)</h3>${inp('ld','applied','Applied Load (Watt / KW)')}<div class="sc"><table><tr><th>বিবরণ</th><th>Qty</th><th>Watt</th><th>Total</th></tr>${LOAD.map(([k,l])=>`<tr><td>${l}</td><td><input type="number" value="${d.load[k+'q']||''}" oninput="cur.data.load['${k}q']=this.value;calc()"></td><td><input type="number" value="${d.load[k+'w']||''}" oninput="cur.data.load['${k}w']=this.value;calc()"></td><td id="t_${k}">${(d.load[k+'q']||0)*(d.load[k+'w']||0)}</td></tr>`).join('')}<tr><th colspan="3">মোট (Total Watt)</th><th id="tt"></th></tr></table></div>
@@ -160,10 +160,10 @@ function formView(){const d=cur.data;
 const pv=k=>imgs[k]?`<img class="img" src="${imgs[k]}">`:'<small>কোনো ছবি নেই</small>';
 function calc(){let t=0;LOAD.forEach(([k])=>{const v=(cur.data.load[k+'q']||0)*(cur.data.load[k+'w']||0);t+=v;const e=$('#t_'+k);if(e)e.textContent=v});cur.data.load.total=t;const e=$('#tt');if(e)e.textContent=t}
 function pick(k,cam){const f=$('#fi');f.value='';if(cam)f.setAttribute('capture',cam===true?'environment':cam);else f.removeAttribute('capture');
- f.onchange=()=>{const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const s=Math.min(1,800/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=i.width*s;c.height=i.height*s;c.getContext('2d').drawImage(i,0,0,c.width,c.height);imgs[k]=c.toDataURL('image/jpeg',.55);$('#p'+k).innerHTML=pv(k)};i.src=r.result};if(f.files[0])r.readAsDataURL(f.files[0])};f.click()}
-async function save(st){const t=Date.now();if(!cur.id)cur.id='F'+t;cur.data.ap=cur.data.ap||{};cur.data.ap.name=cur.data.a.name||'';
+ f.onchange=()=>{const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const s=Math.min(1,800/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=i.width*s;c.height=i.height*s;c.getContext('2d').drawImage(i,0,0,c.width,c.height);imgs[k]=c.toDataURL('image/jpeg',.55);imgDirty[k]=1;$('#p'+k).innerHTML=pv(k);autoSave()};i.src=r.result};if(f.files[0])r.readAsDataURL(f.files[0])};f.click()}
+async function save(st,quiet){const al=quiet?(m=>setInd('✖ Save হয়নি: '+String(m).replace(/\n/g,' ').slice(0,110),true)):(m=>alert(m));const t=Date.now();if(!cur.id)cur.id='F'+t;cur.data.ap=cur.data.ap||{};cur.data.ap.name=cur.data.a.name||'';
  let step='form';try{await db.doc(FK+'/'+cur.id).set({owner:cur.owner,ownerName:cur.ownerName,status:st,data:cur.data,appNo:cur.appNo||'',master:cur.master||'',cfoDone:!!cur.cfoDone,created:cur.created||t,updated:t});
- step='photo';for(const k of['1','2'])if(imgs[k]){step='photo '+k;await db.doc('imgs/'+cur.id+'_'+k).set({d:imgs[k],owner:cur.owner})}step='check';const chk=await db.doc(FK+'/'+cur.id).get();if(!chk.exists||chk.data().updated!==t){alert('Save হয়নি (NOT saved) [got '+(chk.exists?chk.data().updated:'none')+' / want '+t+'].  আপনার role-এর এই কাজের অনুমতি আছে কিনা বা Internet ঠিক আছে কিনা দেখুন।');return false}LOCAL[cur.id]=JSON.parse(JSON.stringify({id:cur.id,...chk.data()}));cur.status=st;cur.updated=t;return true}catch(e){alert('Save FAILED / ব্যর্থ\nCode: '+(e&&e.code||'?')+'\n'+(e&&e.message||e)+'\n\n[Role: '+(me&&me.role)+' | Step: '+step+' | Form status: '+(cur&&cur.status)+' | Owner: '+(cur&&cur.owner)+' | Me: '+(me&&me.mobile)+']\nসম্ভাব্য কারণ: এই কাজের অনুমতি (role) নেই, বা ফর্মের status এখন edit-যোগ্য নয়, বা নতুন firestore.rules Publish করা হয়নি।');return false}}
+ step='photo';for(const k of['1','2'])if(imgs[k]&&imgDirty[k]){step='photo '+k;await db.doc('imgs/'+cur.id+'_'+k).set({d:imgs[k],owner:cur.owner});delete imgDirty[k]}step='check';const chk=await db.doc(FK+'/'+cur.id).get();if(!chk.exists||chk.data().updated!==t){al('Save হয়নি (NOT saved) [got '+(chk.exists?chk.data().updated:'none')+' / want '+t+'].  আপনার role-এর এই কাজের অনুমতি আছে কিনা বা Internet ঠিক আছে কিনা দেখুন।');return false}LOCAL[cur.id]=JSON.parse(JSON.stringify({id:cur.id,...chk.data()}));cur.status=st;cur.updated=t;return true}catch(e){al('Save FAILED / ব্যর্থ\nCode: '+(e&&e.code||'?')+'\n'+(e&&e.message||e)+'\n\n[Role: '+(me&&me.role)+' | Step: '+step+' | Form status: '+(cur&&cur.status)+' | Owner: '+(cur&&cur.owner)+' | Me: '+(me&&me.mobile)+']\nসম্ভাব্য কারণ: এই কাজের অনুমতি (role) নেই, বা ফর্মের status এখন edit-যোগ্য নয়, বা নতুন firestore.rules Publish করা হয়নি।');return false}}
 function dlg(t,c){return new Promise(r=>{const o=document.createElement('div');o.style.cssText='position:fixed;inset:0;background:#0008;display:flex;align-items:center;justify-content:center;z-index:99;padding:16px';o.innerHTML='<div class="card" style="max-width:440px;width:100%;max-height:80vh;overflow:auto;white-space:pre-wrap"><div>'+esc(t)+'</div><div class="bar"><button id="dy">OK</button>'+(c?'<button class="g" id="dn">Cancel</button>':'')+'</div></div>';document.body.appendChild(o);applyLang(o);const x=v=>{o.remove();r(v)};o.querySelector('#dy').onclick=()=>x(true);const n=o.querySelector('#dn');if(n)n.onclick=()=>x(false)})}
 window.alert=t=>{dlg(t,false)};const ask=t=>dlg(t,true);
 let LANG='bn';try{LANG=localStorage.getItem('nsclang')||'bn'}catch(e){}
@@ -173,7 +173,7 @@ function applyLang(root){const b=document.getElementById('lb');if(b)b.textConten
 function setLang(){LANG=LANG==='bn'?'en':'bn';try{localStorage.setItem('nsclang',LANG)}catch(e){}render()}
 async function render(){await render0();applyLang(document.body)}
 const ATTR={'hdr.dtr':'maxlength="5"','hdr.cap':'maxlength="3" inputmode="numeric"','hdr.zone':'maxlength="3"','a.mob':'maxlength="10" inputmode="numeric"','ld.applied':'inputmode="decimal"','a.cid':'inputmode="numeric"','sk.dist':'inputmode="decimal"'};
-addEventListener('input',e=>{if(e.target.id==='f_sk_dist')skr();if(['f_a_cid','f_a_mob','f_hdr_cap'].includes(e.target.id)){const t=e.target,q=t.value.replace(/[Oo]/g,'0').replace(/[০-৯]/g,ch=>ch.charCodeAt(0)-0x9e6).replace(/\D/g,'');if(q!==t.value){t.value=q;const pp=t.id.split('_');cur.data[pp[1]][pp[2]]=q}}const c=document.getElementById('c_'+String(e.target.id).slice(2));if(c)c.textContent=e.target.value.length+'/'+c.dataset.m;if(e.target.id==='f_a_name'){const x=document.getElementById('apn');if(x)x.value=e.target.value.toUpperCase()}});
+addEventListener('input',e=>{autoSave();if(e.target.id==='f_sk_dist')skr();if(['f_a_cid','f_a_mob','f_hdr_cap'].includes(e.target.id)){const t=e.target,q=t.value.replace(/[Oo]/g,'0').replace(/[০-৯]/g,ch=>ch.charCodeAt(0)-0x9e6).replace(/\D/g,'');if(q!==t.value){t.value=q;const pp=t.id.split('_');cur.data[pp[1]][pp[2]]=q}}const c=document.getElementById('c_'+String(e.target.id).slice(2));if(c)c.textContent=e.target.value.length+'/'+c.dataset.m;if(e.target.id==='f_a_name'){const x=document.getElementById('apn');if(x)x.value=e.target.value.toUpperCase()}});
 async function dlPdf(){try{if(!window.html2canvas||!window.jspdf)return alert('PDF library load হয়নি। Internet check করুন বা Print ব্যবহার করুন।');
 const w=document.createElement('div');w.style.cssText='position:fixed;left:-9999px;top:0;width:794px';w.innerHTML=doc(cur).replace('class="a4"','class="a4" style="width:794px;max-width:none;border:0;margin:0;height:auto;min-height:0"');document.body.appendChild(w);
 const cv=await html2canvas(w.firstChild,{scale:2,backgroundColor:'#ffffff'});w.remove();
@@ -214,7 +214,7 @@ const fmtW=v=>{if(v===''||v==null)return '';const n=Number(v);if(isNaN(n))return
 const ST=()=>!!me&&(me.role==='admin'||me.role==='officer');
 const TOPT={type:[['Pakka','পাকা (Pakka)'],['Kaccha','কাঁচা (Kaccha)']],kind:[['Old','পুরানো বাড়ি (Old House)'],['New','নতুন বাড়ি (New House)']]};
 function tiles(k){return TOPT[k].map(([v,l])=>`<button type="button" class="tile ${((cur.data.sk||{})[k]===v)?'on':''}" onclick="skSet('${k}','${v}')">${l}</button>`).join('')}
-function skSet(k,v){cur.data.sk=cur.data.sk||{};cur.data.sk[k]=v;const t=$('#t_'+k);if(t){t.innerHTML=tiles(k);applyLang(t)}skr()}
+function skSet(k,v){cur.data.sk=cur.data.sk||{};cur.data.sk[k]=v;const t=$('#t_'+k);if(t){t.innerHTML=tiles(k);applyLang(t)}skr();autoSave()}
 function askText(t){return new Promise(r=>{const o=document.createElement('div');o.style.cssText='position:fixed;inset:0;background:#0008;display:flex;align-items:center;justify-content:center;z-index:99;padding:16px';o.innerHTML='<div class="card" style="max-width:440px;width:100%"><div>'+esc(t)+'</div><textarea id="rt" rows="3" style="margin-top:8px"></textarea><div class="bar"><button id="dy">OK</button><button class="g" id="dn">Cancel</button></div></div>';document.body.appendChild(o);applyLang(o);o.querySelector('#dy').onclick=()=>{const v=o.querySelector('#rt').value.trim();o.remove();r(v||'-')};o.querySelector('#dn').onclick=()=>{o.remove();r(null)}})}
 async function rejForm(id){const why=await askText('Reject করার কারণ লিখুন (Reason for rejection)');if(why===null)return;try{await db.doc(FK+'/'+id).update({status:'rejected',rejectReason:why,updated:Date.now()});await refresh(id)}catch(e){alert('Failed: '+(e.code||'')+' '+(e.message||e));return}render()}
 async function delForm(id){if(!await ask('এই ফর্ম স্থায়ীভাবে মুছে যাবে। নিশ্চিত? (Delete permanently)'))return;try{await db.doc(FK+'/'+id).delete();for(const k of['1','2']){try{await db.doc('imgs/'+id+'_'+k).delete()}catch(e){}}delete LOCAL[id]}catch(e){alert('Failed: '+(e.code||'')+' '+(e.message||e));return}render()}
@@ -243,6 +243,13 @@ async function delMonth(){const ym=$('#dm').value;if(!ym)return alert('মাস
  if(!list.length)return alert('এই মাসে কোনো ফর্ম নেই');if(!await ask(ym+' মাসের '+list.length+'টি ফর্ম (ও ছবি) স্থায়ীভাবে মুছে যাবে। Excel/PDF নামিয়ে রেখেছেন? নিশ্চিত?'))return;
  let n=0;try{for(const f of list){await db.doc(FK+'/'+f.id).delete();for(const k of['1','2']){try{await db.doc('imgs/'+f.id+'_'+k).delete()}catch(e){}}delete LOCAL[f.id];n++}}catch(e){alert('মাঝপথে ব্যর্থ ('+n+'টি মোছা হয়েছে): '+(e.code||'')+' '+(e.message||e))}
  alert('✔ '+n+'টি ফর্ম মোছা হয়েছে');render()}
+let imgDirty={},AST=null,ASV=false,ASP=false;
+function setInd(m,err){const e=$('#svi');if(e){e.textContent=m;e.style.color=err?'var(--er)':'var(--ok)'}}
+function autoSave(){if(!cur||!(tab==='edit'||tab==='new'))return;if(cur.status!=='draft'&&cur.status!=='returned')return;cur._d=1;setInd('… সেভ হচ্ছে (Saving…)');clearTimeout(AST);AST=setTimeout(doAuto,1500)}
+async function doAuto(){if(!cur||!cur._d||!(tab==='edit'||tab==='new'))return;if(ASV){ASP=true;return}ASV=true;
+ document.querySelectorAll('input[id^="f_"]').forEach(i=>{const p=i.id.split('_');if(cur.data[p[1]])cur.data[p[1]][p[2]]=i.style.textTransform==='uppercase'?i.value.toUpperCase():i.value});
+ let ok=false;try{ok=await save(cur.status||'draft',true)}catch(e){}ASV=false;if(ok)setInd('✔ Auto-save হয়েছে '+new Date().toLocaleTimeString());if(ASP){ASP=false;autoSave()}}
+addEventListener('change',()=>autoSave());
 let HL=[];
 function hook(a){HL=a;const h=$('#app .card h3'),t=$('#app .sc');if(!h||!t)return;t.id='hl';h.insertAdjacentHTML('afterend','<input id="hq" type="tel" inputmode="numeric" placeholder="মোবাইল নম্বর দিয়ে সার্চ (Search by Mobile)" oninput="hs()" style="margin:6px 0">');applyLang(document.body)}
 function hs(){const q=$('#hq').value.trim(),a=q?HL.filter(f=>(f.data.a.mob||'').includes(q)):HL,h=a.length?listTbl(a).replace('<div class="sc">','<div class="sc" id="hl">'):'<p id="hl">পাওয়া যায়নি (Not found)</p>';$('#hl').outerHTML=h}
