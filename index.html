@@ -2,6 +2,14 @@
 <html lang="bn"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>NSC Inspection – WBSEDCL</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b5cab">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="NSC Katiahat">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>
 :root{--bg:#f4f6fa;--card:#fff;--tx:#1c2430;--mu:#5d6b7d;--bd:#d5dbe5;--pr:#0b5cab;--ok:#18794e;--wr:#b45309;--er:#c62828;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10151c;--card:#1a212b;--tx:#e8edf3;--mu:#94a3b5;--bd:#2c3644;--pr:#5aa5ff}}
@@ -29,7 +37,7 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
 @page{size:A4;margin:0}
 @media print{body{background:#fff}header,.noprint,.card{display:none!important}main{padding:0;max-width:none}.a4{border:0;margin:0;width:210mm;height:296mm;max-height:296mm;overflow:hidden;page-break-after:avoid}}
 </style></head><body>
-<header><b>WBSEDCL – NSC Inspection (Katiahat) · FB8c</b><button onclick="setLang()" id="lb">English</button><span id="who"></span><span id="nav"></span></header>
+<header><img src="icon-192.png" alt="" onerror="this.style.display='none'" style="height:32px;width:32px;border-radius:50%;background:#fff"><b>WBSEDCL – NSC Inspection (Katiahat) · FB9</b><button onclick="setLang()" id="lb">English</button><span id="who"></span><span id="nav"></span></header>
 <main id="app">লোড হচ্ছে…</main>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -37,7 +45,7 @@ table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--bd);paddi
 <script>window.fbReady=window.fbReady||new Promise(r=>{window._fbr=r});</script>
 <script type="module">
 /* ====== এখানে আপনার Firebase config বসান (Project settings > Your apps > Web app) ====== */
-const firebaseConfig = {
+const firebaseConfig={
   apiKey: "AIzaSyCrFwo_u3SBf3Tn90bXXr9gbHaVXWkPuYE",
   authDomain: "nsc-katiahat.firebaseapp.com",
   projectId: "nsc-katiahat",
@@ -334,5 +342,6 @@ async function trackView(){await loadForms();$('#app').innerHTML=`<div class="ca
 function doTrack(all){const q=($('#tq')?.value||'').trim();let a=me.role==='agency'?forms.filter(f=>f.owner===me.mobile):me.role==='cfo'?forms.filter(f=>f.status==='submitted'):forms;if(q)a=a.filter(f=>(f.appNo||'')===q||(f.data.a.mob||'').includes(q));$('#tr').innerHTML=a.length?listTbl(a):'<p>পাওয়া যায়নি।</p>'}
 function fit1(on){document.querySelectorAll('.fit').forEach(e=>{e.style.zoom=1;if(on){const h=e.scrollHeight,m=281*3.7795-6;if(h>m)e.style.zoom=(m/h).toFixed(3)}})}
 addEventListener('beforeprint',()=>fit1(true));addEventListener('afterprint',()=>fit1(false));
+if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 init();
 </script></body></html>
